@@ -1,0 +1,25 @@
+#version of docker-compose file
+version: "3"
+#services refer to the container configuration
+services:
+  #name of the service
+  item-app:
+    #pull image that we wiil use
+    image: ghcr.io/zevara/item-app:v1
+    #exposing port 80 for host, 8080 for container
+    ports:
+      - 80:8080
+    #this service depends on item-db service, item-db must be up first
+    depends_on:
+      - item-db
+    #container restart policy
+    restart: on-failure
+  item-db:
+    image: mongo:3
+    #mount volume between host directory and container directory
+    volumes:
+      - ./app-db:/data/db
+    restart: on-failure
+#mount volume between host directory and container directory
+volumes:
+  app-db:
